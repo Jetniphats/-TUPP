@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แจ้งซ่อมอุปกรณ์ - โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-control:hover {
+            border-color: #9ca3af;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .priority-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .priority-option {
+            position: relative;
+        }
+
+        .priority-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .priority-label {
+            display: block;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-weight: 500;
+        }
+
+        .priority-option input[type="radio"]:checked + .priority-label {
+            border-color: #4f46e5;
+            background: #4f46e5;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .priority-low {
+            border-color: #10b981 !important;
+        }
+
+        .priority-option input[type="radio"]:checked + .priority-low {
+            background: #10b981 !important;
+        }
+
+        .priority-medium {
+            border-color: #f59e0b !important;
+        }
+
+        .priority-option input[type="radio"]:checked + .priority-medium {
+            background: #f59e0b !important;
+        }
+
+        .priority-high {
+            border-color: #ef4444 !important;
+        }
+
+        .priority-option input[type="radio"]:checked + .priority-high {
+            background: #ef4444 !important;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0 10px;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .priority-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>ระบบแจ้งซ่อมอุปกรณ์</h1>
+            <p>โรงเรียนเตรียมอุดมศึกษาพัฒนาการสุวรรณภูมิ</p>
+        </div>
+
+        <div class="form-container">
+            <form id="repairForm">
+                <div class="form-group">
+                    <label for="studentName">ชื่อ-นามสกุล <span class="required">*</span></label>
+                    <input type="text" id="studentName" class="form-control" required placeholder="กรุณากรอกชื่อ-นามสกุล">
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">รหัสประจำตัวนักเรียน <span class="required">*</span></label>
+                    <input type="text" id="studentId" class="form-control" required placeholder="เช่น 12345" pattern="[0-9]{5}" title="กรุณากรอกรหัสนักเรียน 5 หลัก">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">สถานที่/ห้อง <span class="required">*</span></label>
+                    <input type="text" id="location" class="form-control" required placeholder="เช่น ห้อง 3205, ห้องคอมพิวเตอร์, หอประชุม">
+                </div>
+
+                <div class="form-group">
+                    <label for="equipment">อุปกรณ์ที่ต้องการซ่อม <span class="required">*</span></label>
+                    <input type="text" id="equipment" class="form-control" required placeholder="เช่น คอมพิวเตอร์, ทีวี, เครื่องปรับอากาศ">
+                </div>
+
+                <div class="form-group">
+                    <label for="problemDescription">รายละเอียดของปัญหา <span class="required">*</span></label>
+                    <textarea id="problemDescription" class="form-control" required placeholder="กรุณาอธิบายปัญหาที่พบโดยละเอียด เช่น อาการ เสียงผิดปกติ หรือสาเหตุที่เป็นไปได้"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>ระดับความเร่งด่วน <span class="required">*</span></label>
+                    <div class="priority-group">
+                        <div class="priority-option">
+                            <input type="radio" id="priorityLow" name="priority" value="ต่ำ" required>
+                            <label for="priorityLow" class="priority-label priority-low">
+                                🟢 ต่ำ<br>
+                                <small>ไม่เร่งด่วน</small>
+                            </label>
+                        </div>
+                        <div class="priority-option">
+                            <input type="radio" id="priorityMedium" name="priority" value="ปานกลาง" required>
+                            <label for="priorityMedium" class="priority-label priority-medium">
+                                🟡 ปานกลาง<br>
+                                <small>ใช้งานได้บ้าง</small>
+                            </label>
+                        </div>
+                        <div class="priority-option">
+                            <input type="radio" id="priorityHigh" name="priority" value="สูง" required>
+                            <label for="priorityHigh" class="priority-label priority-high">
+                                🔴 สูง<br>
+                                <small>เร่งด่วน</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactInfo">ช่องทางติดต่อกลับ</label>
+                    <input type="text" id="contactInfo" class="form-control" placeholder="เบอร์โทรศัพท์ หรือ Line ID (ไม่บังคับ)">
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    📤 ส่งรายงานการซ่อม
+                </button>
+
+                <div id="successMessage" class="success-message">
+                    <h3>✅ ส่งรายงานเรียบร้อยแล้ว!</h3>
+                    <p>ทีมช่างจะดำเนินการตรวจสอบและซ่อมแซมโดยเร็วที่สุด<br>
+                    หมายเลขรายงาน: <span id="reportNumber"></span></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Google Sheets Configuration
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxbx0X973rUfd2SYlJ68CN0nTlCYuEUg2YDVb_RHEcizjX0rwzEJkSSlwDOkA_pPJsV/exec';
+        
+        let reportCounter = 1;
+        const reportData = [];
+
+        // ฟังก์ชันส่งข้อมูลไปยัง Google Sheets
+        async function sendToGoogleSheets(data) {
+            try {
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                return true; // no-cors mode ไม่สามารถอ่าน response ได้
+            } catch (error) {
+                console.error('Error sending to Google Sheets:', error);
+                return false;
+            }
+        }
+
+        document.getElementById('repairForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // แสดง loading
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ กำลังส่งข้อมูล...';
+            submitBtn.disabled = true;
+            
+            // เก็บข้อมูลฟอร์ม
+            const formData = {
+                reportId: 'RPT' + new Date().getFullYear() + String(reportCounter).padStart(4, '0'),
+                studentName: document.getElementById('studentName').value,
+                studentId: document.getElementById('studentId').value,
+                location: document.getElementById('location').value,
+                equipment: document.getElementById('equipment').value,
+                problemDescription: document.getElementById('problemDescription').value,
+                priority: document.querySelector('input[name="priority"]:checked').value,
+                contactInfo: document.getElementById('contactInfo').value || 'ไม่ระบุ',
+                timestamp: new Date().toLocaleString('th-TH', {
+                    timeZone: 'Asia/Bangkok',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                })
+            };
+            
+            // ส่งข้อมูลไปยัง Google Sheets
+            const success = await sendToGoogleSheets(formData);
+            
+            if (success) {
+                // เพิ่มข้อมูลเข้าใน array
+                reportData.push(formData);
+                
+                // แสดงข้อความสำเร็จ
+                document.getElementById('reportNumber').textContent = formData.reportId;
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // เลื่อนไปที่ข้อความสำเร็จ
+                document.getElementById('successMessage').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // เคลียร์ฟอร์ม
+                this.reset();
+                
+                // เพิ่มตัวนับ
+                reportCounter++;
+                
+                // ซ่อนข้อความสำเร็จหลัง 5 วินาที
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+                
+                console.log('รายงานใหม่:', formData);
+            } else {
+                // แสดงข้อความผิดพลาด
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+            }
+            
+            // รีเซ็ตปุ่ม
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+
+        // เพิ่มเอฟเฟกต์การพิมพ์ใน input
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // เอฟเฟกต์สำหรับ radio buttons
+        document.querySelectorAll('input[name="priority"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.priority-label').forEach(label => {
+                    label.style.transform = 'scale(1)';
+                });
+                this.nextElementSibling.style.transform = 'scale(1.05)';
+            });
+        });
+
+        // เพิ่มการตรวจสอบเลขรหัสนักเรียน ตัวเลขโอนลี่ พิมพ์ตัวอักษรไม่ได้
+        document.getElementById('studentId').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 5) {
+                this.value = this.value.slice(0, 5);
+            }
+        });
+    </script>
+</body>
+</html>
